@@ -1,0 +1,302 @@
+\documentclass[12pt]{article}%INSERT [titlepage] BEFORE {article} TO HAVE A TITLEPAGE
+%======== Streamlining Circuit Diagramming	=======
+% trust me, this is gonna ease insertion of the di-
+% agram
+\newcommand{\dbegin}[2]{\begin{figure}[h!]
+\caption{#1}\label{#2}
+\begin{center}\begin{circuitikz}[american voltages]% 'Mmerica!
+\draw}
+% now for tha finisha:
+\newcommand{\dend}{;\end{circuitikz}\end{center}
+\end{figure}}
+%==== multicol-compatible figure environment =======
+\newcommand{\kyfigure}[4]{\begin{figure}[h!]\centering
+\includegraphics[width=#1\textwidth]{#2}
+  \caption{#3}
+  \label{#4}
+\end{figure}}
+%========= include packages ========================
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{setspace}
+\usepackage{listings} % shows syntax-highlighted code
+%\usepackage{tabbing}
+\usepackage{fancyhdr,multicol,fixltx2e}
+\usepackage{lastpage}
+%\usepackage{extramarks}
+%\usepackage{chngpage}
+%\usepackage{soul}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{float}%float allows placement specifier
+                  %H for floats which places the float
+                  %exactly in the compiled document
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks   = true, %Colours links instead boxing
+  urlcolor     = blue, %Colour for external hyperlinks
+  linkcolor    = green,%Colour of internal links
+  citecolor   = purple %Colour of citations
+}
+%\usepackage{caption}
+%\usepackage{subcaption}\usepackage{titling}
+%\usepackage{tikz}\usepackage{circuitikz}
+%\setlength{\droptitle}{-10em} 
+\parskip 2ex
+%\setlength{\parindent}{0cm}
+%========= Beautifying Source Code Display =========
+%\definecolor{orange}{RGB}{255,179,71}
+%\definecolor{pastelolivegreen}{RGB}{151,173,98}
+%\definecolor{pastelbrown}{RGB}{.6,.6,0}
+%\definecolor{grey}{RGB127,127,127}
+%\lstdefinestyle{customcode}{
+%  belowcaptionskip=1\baselineskip,
+%  breaklines=true,
+%  frame=L,
+%  xleftmargin=\parindent,
+%  language=C,
+%  showstringspaces=false,
+%  basicstyle=\footnotesize\ttfamily,
+%  keywordstyle=\bfseries\color{green!40!black},
+%  commentstyle=\itshape\color{purple!40!black},
+%  identifierstyle=\color{grey},
+%  stringstyle=\color{orange},
+%}
+%==================================================
+\newcommand{\poweroften}[1]{\cdot 10^{#1}}
+\renewcommand{\t}{\text}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\partialby}[1]{\frac{\partial}{\partial #1}}
+\newcommand{\firstpartial}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\secondpartial}[2]{\frac{\partial ^2 #1}{\partial #2 ^2}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\>}{\big>}
+\renewcommand{\d}{\,\mathrm{d}}
+\newcommand{\dby}[1]{\frac{\d}{\d #1}}
+\renewcommand{\(}{\left(} \renewcommand{\)}{\right)}
+\newcommand{\knaught}{\frac{1}{4\pi\epsilon_0}} 
+\renewcommand{\r}{\textbf{r}}
+\newcommand{\magnitudeofscriptr}{|\r-\r'|}
+\newcommand{\then}{\Rightarrow\;\;}
+%\newcommand{\sect}[1]{\section\*{#1}\vspace{-2ex}\hrule\nobreak}
+%\newcommand{\ssec}[1]{\subsection{#1}\vspace{-1ex}\hrule\nobreak}
+%\newcommand{\sssec}[1]{\subsubsection{#1}\vspace{-1qex}\hrule\nobreak}
+% Margins
+%\topmargin=-.5in
+%\headheight=.25in
+%\headsep=.25in
+%\evensidemargin=-.25in
+%\oddsidemargin=-.25in
+%\textwidth=7in
+%\textheight=9in
+%\footskip=.5in
+\pagestyle{fancy}
+\lhead{Area and Eccentricity of Fibroblasts During Trypsinization} %%%%%%%%%%%% TITLE %%%%%%%%%%%%%%%%
+\chead{} %%%%%%%%%%%% COURSE NAME %%%%%%%%%%%%%%%%
+\rhead{}
+\lfoot{}
+\cfoot{\today}
+% edit line below for 'page x of y' in right footer
+\rfoot{Page \thepage\ of\ \pageref{LastPage}} % \thepage\ of\ \pageref{LastPage}
+\renewcommand\headrulewidth{4pt}
+%\setcounter{secnumdepth}{0}%uncomment this line to remove numbering of sections and subsections
+\title{Area and Eccentricity of Fibroblasts During Trypsinization}%%%%%%%%%%%% TITLE %%%%%%%%%%%%%%%%
+\date{\today}
+\author{Kyle Thomas}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+%\begin{multicols*}{2}%comment this and \end{multicols} for single column layout
+%multicols* doesn't balance vertical length of columns
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%% Document Body Below Here %%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{abstract}
+\begin{center}
+Area and eccentricity of mouse-embryo fibroblast cells are measured as they release the top surface of collagen gel. Image sets of the cells are collected at regular time-intervals as the cells detach. Matlab software was written for measuring the area and eccentricity of each selected cell. The code is included in this paper as well as a link to the code 
+\end{center}
+\end{abstract}
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+\section*{Experimentation Methods}
+
+\begin{figure*}
+  \centering
+  \caption{Orange cells submerged in violet growth medium atop green collagen are diagrammed.}
+  \includegraphics[clip=true,width=.6\textwidth]{img/cells-diagram}
+  \label{cellDiagram}
+\end{figure*}
+
+Mouse embryo fibroblasts exhibiting green fluorescent protein (cell line NIH3T3/GFP) are placed atop a collagen-gel and suspended in growth medium(see the diagram in Figure \ref{cellDiagram}). The cells attach to the surface of the collagen at 37$^\circ$C for 15 to 30 hours in a CO2-regulated incubator. The cells were not seen to undergo mitos++is.
+
+Cells are imaged beginning 40 minutes before trypsinization via TrypLE Select. The confocal microscope images are collected from using a 70/30 transmission/reflection beam-splitter. The images are obtained in image sets called z-stacks.
+
+Each z-stack is a set of images at depths varying by a few microns from ten microns below the surface of the collagen to ten microns above the surface of the collagen. Note that ten microns is  the approximately the radius of the subject cells when not attached. Z-stacks are captured every five to fifteen minutes.
+
+When capturing images of the cells, the sample is excited by a 488nm laser. Light from 500nm to 550nm is observed for emissions of the GFP. 
+
+% For images of the fibers, the sample is excited by a 532nm laser and wavelengths in the spectrum 531nm to 536nm are observed for reflection transmission of the 532nm incident light off of the fibers. The spectrum of observation for the fibers was determined visually by finding the spectrum which made the fibers most distinct. There would be more light detected from the fibers by observing a spectrum which is symmetric about the wavelength of light incident on the fibers (526nm to 536nm). However, there is more unwanted signal because much more light emitted by the GFPs is detected below 531nm.
+
+%Both sets of images are acquired with a 30\% reflection, 70\% transmission beamsplitter. Using the same beamsplitter for both images means time is not spent changing the beamsplitter between images. This time savings between frames allows a z-stack to be captured closer to instantaneously. An instantaneous "snapshot" of the z-stack is the ideal case. 
+
+%Both cell- and fiber-images are acquired at various z-values every 5 minutes.
+
+During imaging, the growth-medium surrounding the cells is rinsed with 1XPBS twice. The PBS is next replaced with TrypLE Select. The TrypLE Select breaks the proteins binding the cells to the collagen-matrix.
+
+The proteins that bind the cells to the collagen are on protrusions called filopodia. After the bonds break, the filopodia recede back into the cells. This trypsinization leaves the cells in a spherical shape. The spherical fibroblasts appear as circles through the microscope.
+
+%The parameters explored are temperature gel forms at, collagen-concentration, and cell-density. Collagen was gelated at either 21$^\circ$C or 37$^\circ$C. Collagen-concentration varies from 1 to 5 mg/mL.
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % %
+
+%\section*{Image Analysis}
+%Image acquisition from each experiment produces a folder of uncompressed, two-dimensional  TIFF images. There is a TIFF image file for each depth imaged in a z-stack. A z-stack is a set of images of the sample with different z-values(depths).
+%
+%Images are captured at various z-values as a precaution. The precaution is so that cells can be seen if the surface of the gel rises or falls during imaging. Also, this precaution allows for better data analysis if the cells migrate noticeably in the z-direction while imaging. 
+%
+%%The first thing done to the images is that each z-stack is "smooshed," so to speak. The smooshing is what would be seen when looking along the z-axis. This is accomplished by a maximal intensity projection(MIP).
+%
+%An MIP is a grayscale image created using a z-stack of grayscale images. The pixel at position (x,y) has the intensity of the most intense pixel at the same position from all z-level images. This method is akin to smooshing the sample flat because it gives the z-projection. This MIP is what would be seen looking through the sample in the z-direction.
+%
+%There is code which does what is needed available online. What is required from the code is a measure of collagen-fiber-density and collagen-fiber-orientation. The code is being adapted for this project.
+
+\section*{Image Processing Methods}
+
+Each experiment produces a folder containing an image file for every depth in every z-stack. Image files for each z-stack are combined into a single TIFF file using Matlab. Maximal intensity projection is the method used on z-stacks to map several images into a single image.
+
+The Matlab function mip creates a maximal intensity projection for each z-stack. A maximal intensity projection is a single image. The maximal intensity projection is made by using the value of the brightest pixel at position $(x_1,y_1)$ from every image in the z-stack.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{./img/mip-illustration}
+\caption{The mip function is illustrated projecting simple example images.}
+\label{mip-illustration}
+\end{figure}
+
+The function maskmaker is used to draw a region loosely enclosing a single cell at its most stretched out. Pixels outside the region are set to black. This creates a mask loosely surrounding the cell of interest. 
+
+The function stackmasker applies this mask to all images in the stack. All masked images contain the entire cell of interest. The mask is drawn around the cell when the filopodia are stretched out to ensure the whole cell is visible in later images as the cell's filopodia recede.
+
+Masking works by ensuring that the cell of interest is the largest object shown. A mask is made loosely enclosing a single cell so that the user can specify a certain cell for software to outline precisely. Cells are precisely outlined by software to save time and to ensure uniformity in drawing outlines.
+
+Filling the objects in the image proceeds as follows. The brightness of each masked image is multiplied by a constant factor. This factor is 15 by default for the trypsinization images. Some z-stacks were brightened by a factor of more than 15 to facilitate masking entire cells.
+
+The Matlab Image Processing Toolbox function im2bw uses a brightness threshold to create a black and white image from a grayscale image. Pixels brighter than the threshold value are converted to white while other pixels are turned to black. The threshold used to create binary(black and white) images is 0.15.
+
+Several experiments show multiple cells in each image. For example, consider an image that contains cells A and B. Each cell's shape and eccentricity can be measured separately. 
+
+A cell is measured by creating a separate binary set of images for that cell. The cell is segmented by ensuring it is the only object visible in its image-set.
+
+Cell A is loosely masked by the user so that it's the largest object visible. Cell A is segmented in the images. These images showing only cell A are saved. The area and eccentricity of cell A is measured from these images. This process is repeated to measure cell B.
+
+Image segmentation yields multipage-tiff-files, where each page is a 1024 pixel by 1024 pixel image. All images in a file show only the same particular cell. The images are taken 20 minutes apart so that each file watches a different cell as it releases the collagen substrate.
+
+
+
+%\section*{Conclusions}
+%
+%\section*{Acknowlegements}
+%
+%\section*{References}
+
+\section*{Appendices}
+
+\subsection*{Appendix A: Experiment Protocol}
+The protocol for three collagen-samples of concentration 1.5 and gelled at 21$^{\circ}$C is as follows:
+\begin{enumerate}
+	\item Create the collagen-solution.
+	\begin{enumerate}
+		\item Total volume to be made is V = (90$\mu$L per sample)(3 samples)(150\%) = 405$\mu$L.
+		\item Combine 40.5$\mu$L 10X PBS, 14.2$\mu$L NaOH, and 276.3$\mu$L growth-medium.
+		\item Shake this solution at 400rpm for 20 seconds.
+		\item Store at 6$^{\circ}$C for 10 minutes.
+		\item Add 71$\mu$L collagen homogeneously.
+		\item Stir collagen into solution with a 100$\mu$L pipette tip.
+		\item Pipette 90$\mu$L collagen-solution into each of the 3 samples a, b, and c.
+		\end{enumerate}
+	\item Wrap each sample in film and let gelate at 21$^{\circ}$C for two hours.
+	\item Place growth-medium on all samples and place cells on sample a.
+	\item Place cells on sample b four hours later.
+	\item Place cells on sample c four hours later.
+	\item Using confocal fluorescence microscopy, capture a 10$\mu$m tall z-stack of images of fibers and cells, separately, every 20 minutes for four hours.
+	\begin{enumerate}
+		\item After the first z-stack, replace the growth-medium on the sample with 1X PBS.
+		\item After the second z-stack, replace the PBS with fresh PBS.
+		\item After the third z-stack, replace the PBS with 1X TrypLe\texttrademark\hspace{.1em} Select.
+	\end{enumerate}
+		\item When sample a is finished imaging, image sample b in the same way as sample a was imaged.
+		\item When sample b is finished imaging, image sample c in the same way as sample a was imaged.
+\end{enumerate}
+
+\newpage
+\addtolength{\hoffset}{-50pt}
+\subsection*{Appendix B: Code}
+\lstinputlisting[ language=Matlab,
+                  caption=segmenter.m,
+                  label=segmenter ]
+                {../../../Documents/Matlab/segmenter.m}
+
+\newpage
+\lstinputlisting[ language=Matlab,
+                  caption=regionPropsScript.m,
+                  label=regionPropsScript ]
+            {../../../Documents/Matlab/regionPropsScript.m}
+
+\newpage          
+\lstinputlisting[ language=Matlab,
+                  caption=plotterScript.m,
+                  label=plotterScript ]
+                {../../../Documents/Matlab/plotterScript.m}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%% Document Body Above Here %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\end{multicols*}%comment this and \begin{multicols} for single column layout
+%multicols* doesn't balance vertical length of columns
+\end{document}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[clip=true,trim=0em 13em 0em 13em,width=0.75\textwidth]{####FILENAME####}
+  \end{center}
+  \caption{##CAPTION##}
+  \label{##fig:LABEL##}
+\end{figure}
+
+\begin{table}\caption{##CAPTION##}\label{##LABEL##}\begin{tabular}{ |l|l| }
+  \hline
+  \multicolumn{2}{|c|}{Team sheet} \\
+  \hline
+  GK & Paul Robinson \\
+  LB & Lucus Radebe \\
+  DC & Michael Duberry \\
+  DC & Dominic Matteo \\
+  RB & Dider Domi \\
+  MC & David Batty \\
+  MC & Eirik Bakke \\
+  MC & Jody Morris \\
+  FW & Jamie McMaster \\
+  ST & Alan Smith \\
+  ST & Mark Viduka \\
+  \hline
+\end{tabular}
+
+\begin{wrapfigure}{r}{.6\textwidth}
+  \begin{center}
+    \includegraphics[width=0.55\textwidth]{diagram}
+  \end{center}
+  \caption{Experimental Diagram}
+  \label{fig:diagram}
+\end{wrapfigure}
+
+\begin{wraptable}{l}{.6\textwidth}\begin{center}\begin{tabular}[h]{|c|c|c|c|c|c|}\hline
+$\Delta t$ & $R_{top}$ & $R_{term}$ & $\Delta V_{function generator}$ & $\Delta V_{term}$ & $\Delta V_{reflection}$\\\hline 
+780ns & 70 & 0 & 0.148 & 0 & -0.130\\
+780ns & 70 & 25 & 0.152 & 0.064 & -0.072\\ 
+780ns & 70 & 54.2 & 0.172 & 0.124 & -0.016\\ 
+780ns & 70 & 186 & 0.154 & 0.182 & 0.070\\ 
+780ns & 70 & 535 & 0.100 & 0.256 & 0.100\\ 
+780ns & 70 & $\infty$ & 0.158 & 0.266 & 0.130\\\hline
+\end{tabular}\label{tab:measurements}\caption{Measurements of the Circuit Response}\end{center}\end{wraptable}

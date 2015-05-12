@@ -1,0 +1,21 @@
+\usepackage{listings}% show syntax-highlighted code
+\usepackage{graphicx}% include images
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{amsmath,bm}
+\renewcommand{\d}{{\rm d}}
+\renewcommand{\i}{\bm{\hat{\imath}}}
+\renewcommand{\j}{\bm{\hat{\jmath}}}
+%\renewcommand[1]{\exp}{{\rm exp}\(#1
+\newcommand{\E}{\bm{\vec{E}}}
+\renewcommand{\(}{\left(}
+\renewcommand{\)}{\right)}
+\newcommand{\<}{\left\langle}
+\renewcommand{\|}{\middle|}
+\renewcommand{\>}{\right\rangle}
+\newcommand{\bra}[1]{\left\langle #1 \right|}
+\newcommand{\ket}[1]{\left| #1 \right\rangle}
+\newcommand{\braket}[2]{\left\langle #1 \middle| #2 \right\rangle}
+\newcommand{\braketstuff}[3]{\left\langle #1 \middle| #2 \middle| #3 \right\rangle}
+\newcommand{\expectstuff}[2]{\left\langle #1 \middle| #2 \middle| #1 \right\rangle}
+\newcommand{\expect}[1]{\left\langle #1 \right\rangle}
+\newcommand{\braketself}[1]{\left\langle #1 \middle| #1 \right\rangle}
