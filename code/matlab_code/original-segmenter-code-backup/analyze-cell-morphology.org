@@ -1,0 +1,12 @@
+* mask images
+** ask user for base directory and string to match filenames of the images(*.tif, probably) 
+** if there are matching filenames in the base directory:
+*** read images
+*** have user create mask
+*** get user user confirmation by showing the mask applied to all images
+*** save masked images to the output folder(predetermined folder)
+** repeat these substeps for all subfolders in the base directory
+* use regionprops to find the total area for each segmented image
+* create a csv for each experiment in a single location:
+** record the time since trypsin, area, and aspect ratio for each image
+* plot d(area)/d(time) and d(aspect ratio)/d(time) for all experiments together
