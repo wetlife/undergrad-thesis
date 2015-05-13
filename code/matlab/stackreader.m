@@ -1,5 +1,5 @@
-% reads images in given directory matching given
-% pattern into a stack
+% reads images in the directory or multi-page image matching
+% the given pattern into a stack in memory
 % stack = stackreader(stackDirectory, filenamematchingstring)
 function stack = stackreader(stackDirectory, filenamematchingstring)
 
@@ -22,7 +22,6 @@ if length(files) == 1
 elseif isempty(files)
     disp('ERROR: No matching image files');
     return
-
 
 % else assumes each file is a single page tif and reads files as 2d
 % images into an array named stack

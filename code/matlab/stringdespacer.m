@@ -1,2 +1,2 @@
 function stringwithoutspaces = stringdespacer(string)
-stringwithoutspaces = string(string ~= ' ')
+stringwithoutspaces = string(string ~= ' ');

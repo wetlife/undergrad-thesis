@@ -1,13 +1,14 @@
-folder = 'C:\Users\thomasky\Research\2D-fibertraction\binary';
+folder = '../../data/3-segmented';
 files = ls(fullfile(folder,'*.tif'));
 for file = 1:size(files,1) 
 
-    % ask for time interval between z-stacks
+    % ask for time interval between z-stack acquisition
     stack = stackreader(folder,files(file,:));
 
     % get time, area, and eccetricity values of object for each page
     disp('######################################################');
-    disp(['PROCESSING FOLDER #' num2str(file) files(file,:)]);
+    disp(['PROCESSING SEGMENTED OBJECT #' num2str(file) ':']);
+    disp( files(file,:) );
     disp('######################################################');
     timeInterval = input('\nTIME BETWEEN Z-STACKS: ');
     timeOffset = input(['NUMBER OF Z-STACKS BEFORE '...

@@ -1,14 +1,22 @@
-% this script segments each object in a tiff-stack in its own stack
+% this script segments each object of a tiff-stack into its own stack
 % by asking the user to mask a region constaining only one object.
 % user decides how much to brighten and threshold the image for
-% segmentation
-directory = 'O:\thesis\_ph403';
-outputPath = fullfile(directory, '..','binary');%removed '..',
+% segmentation. Put all files for each sequence of mip images into
+% a separate folder within "directory"
+
+% directory contains folders which each contain an image sequence:
+directory = '../../data/0-good-images-no-beads';
+% where to put output files:
+outputPath = fullfile(directory,'..','3-segmented');
+% senesitivity for segmentation:
 threshold = 0.15;
+% brighten by this factor by default:
 defaultBrighteningFactor = 15;
-folders = ls(directory);
-%% attempt to resume from the folder that the program left off at
-%%%%%%%%%%%%%%%%%%commented for scripting%%%%%%%%%%%%%%%%
+% get folders or file-sets containing stacks:
+folders = ls(directory);folders = folders(3:end,:);
+% save all intermediate stacks? (true or false)
+saveIntermediateStacks = true;
+% attempt to resume from the folder that the program left off at
 if exist('k','var')
     resume = input(sprintf(['Enter the folder number to start'...
         ' with or press enter to attempt\nresuming where the'...
@@ -23,36 +31,32 @@ else
 end
 
 for k=startingfolder:length(folders(:,1))
-    
-
-%% read all folders in directory and skip folders with no tiffs
+    % read all folders in directory and skip folders with no tiffs
     stackDirectory = fullfile(directory,strtrim(folders(k,:)));
     if size(dir(fullfile(stackDirectory,'*.tif')),1)==0 &&...
             isdir(stackDirectory)
         continue
     end
 
-%% read stack in current folder
+    % read stack in current folder
     disp(['FOLDER #' num2str(k) ': ' folders(k,:)]);
     stack = stackreader(stackDirectory,'*.tif');
 
-%% Loop through binarizing stack until ok
+    % loop through binarizing stack until ok
+    if exist('brightenedStack','var')
+        clear('brightenedStack');
+    end
+    ok = 0;
+    while ~isempty(ok)
+        
+        % get brightening factor from user or use default
+        if ok ~= 0
+            brighteningFactor = ok;
+        end
+        if ~exist('brighteningFactor','var')
+            brighteningFactor = defaultBrighteningFactor;
+        end
 
-%%%%%%%%%%%%%%%%%%commented for scripting%%%%%%%%%%%%%%%%
-%     if exist('brightenedStack','var')
-%         clear('brightenedStack');
-%     end
-%     ok = 0;
-%     while ~isempty(ok)
-%         
-%         % get brightening factor from user or use default
-%         if ok ~= 0
-%             brighteningFactor = ok;
-%         end
-%         if ~exist('brighteningFactor','var')
-%             brighteningFactor = defaultBrighteningFactor;
-%         end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % brighten, binarize, and fill the stack
         bwStack = zeros(size(stack));
         for page=1:size(stack,3)
@@ -62,15 +66,21 @@ for k=startingfolder:length(folders(:,1))
         end
         
         % show stack and ask if ok, not ok => redo w/ new parameters
+        implay(bwStack);
+        ok = input(['PRESS ENTER IF B&W STACK IS OK OR '...
+                   'ENTER NEW BRIGHTENING FACTOR: ']);
+    end
+    
+    % write the binary stack if saveIntermediateStacks is true
+    if saveIntermediateStacks
+        sprintf(['SAVING BINARIZED STACK IN\n',...
+            fullfile(outputPath,'..','1-binarized')])
+        stackwriter(bwStack,fullfile(directory,'..','1-binarized'),...
+            ['binarized-' folders(k,:)],'','');
+    end
 
-%%%%%%%%%%%%%%%%%%commented for scripting%%%%%%%%%%%%%%%%
-%         implay(bwStack);
-%         ok = input(['PRESS ENTER IF B&W STACK IS OK OR ENTER NEW '...
-%                    'BRIGHTENING FACTOR: ']);
-
-end
-%% let user mask region containing mth object amd decide whether to 
-%  save the selected object's stack
+    % let user mask region containing mth object and decide whether to
+    %  save the selected object's stack
 
     % ask how many objects in the current stack will be masked
     numobjects = input(sprintf(['How many objects will be'...
@@ -84,22 +94,34 @@ end
         while 1==1
             appendObjectToFilename = ['object-' num2str(m)];
             maskedstack = stackmasker(bwStack,mask,threshold);
+            % write the masked stack if saveIntermediateStacks is true
+            if saveIntermediateStacks
+                sprintf(['SAVING MASKED STACK IN\n',...
+                    fullfile(directory,'..','2-masked')])
+                stackwriter(maskedstack,fullfile(directory,...
+                    '..','2-masked'),['masked-' folders(k,:)],...
+                    '',appendObjectToFilename);
+            end
+            segmentedstack = maskedstack;
             for page=1:size(maskedstack,3)
-                maskedstack(:,:,page) = ExtractNLargestBlobs(maskedstack(:,:,page),1);
+                segmentedstack(:,:,page) =...
+                    ExtractNLargestBlobs(maskedstack(:,:,page),1);
             end
             
-            % show masked stack. ask if ok. ok => save 1-object-stack
-            implay(maskedstack);
+            % show segmented stack. ask if ok...
+            % if ok => save single-object-stack
+            implay(segmentedstack);
             ok = input(sprintf(['Either enter 1 to save'...
-                ' the binary stack, press enter to skip,\nor enter'...
-                ' anything else to tinker.\n']));
+                ' the segmented stack, press enter to skip,'...
+                '\nor enter anything else to tinker.\n']));
             if ok == 1
-                disp(['WRITING BINARY STACK:' folders(k,:) '.tif']);
-                stackwriter(maskedstack,outputPath,...
-                            ['binary-' folders(k,:)],...
-                            '',appendObjectToFilename);
-                disp(['SUCCESSFULLY WROTE THE STACK NAMED binary-',...
-                      folders(k,:),appendObjectToFilename,'.tif' ])
+                sprintf(['WRITING SEGMENTED STACK\n:' folders(k,:) '.tif']);
+                stackwriter(segmentedstack,outputPath,...
+                    ['segmented-' folders(k,:)],'',...
+                    appendObjectToFilename);
+                sprintf(['SUCCESSFULLY WROTE THE STACK NAMED\n'...
+                    'segmented-', folders(k,:),appendObjectToFilename,...
+                    '.tif' ])
                 break
             elseif isempty(ok)
                 break
@@ -109,4 +131,4 @@ end
         end
             continue
     end
-%end
+end

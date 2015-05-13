@@ -1,7 +1,7 @@
 % creates separate scatter plots of data from csv
 
 % initialize variables
-csvDirectory = 'C:\Users\thomasky\Research\2D-fibertraction\binary';
+csvDirectory = '../../data/3-segmented';
 csvFiles = ls(fullfile(csvDirectory,'*.csv'));
 
 % initialize figures and set each to hold
