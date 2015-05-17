@@ -3,13 +3,11 @@
 \begin{document}
 \title{Area and Eccentricity of Fibroblasts During Trypsinization}\author{Kyle Thomas}\date{\today}\maketitle
 
-\begin{widetext}
 \begin{abstract}
 \begin{center}
 Area and eccentricity of mouse-embryo fibroblast cells are both measured as the cells release the top surface of collagen gel. Image sets of the cells are collected at regular time-intervals during and after detachment. Software was written to segment selected cells and measure both the area and eccentricity of each segmented cell. Some code is included in appendices as well as a link to all of the code.
 \end{center}
 \end{abstract}
-\end{widetext}
 
 \section*{Experimentation Methods}
 \begin{figure}
@@ -41,7 +39,7 @@ The proteins that bind the cells to the collagen are on bulges in the cell-membr
 
 This flattening of the philopodia leaves the cells somewhat spherical. The spherical fibroblasts appear as circles when seen through the microscope. While the cells return to a spherical shape, their lack of sphericilaty can be measured as eccentricity, as in the eccentricty of an ellipse.
 
-\section*{Image Processing}
+\section*{Image Processing Methods}
 A single experiment produces a folder containing all the z-stacks acquired during the experiment. Each z-stack is comprised of several images, as described before. The image files for a z-stack are combined into a single TIFF using Matlab. A maximal intensity projection is used to transform all images comprising a z-stack into a single image.
 
 The Matlab function mip creates a maximal intensity projection for each z-stack. This maximal intensity projection is a single image. The maximal intensity projection is made by using the value of the brightest pixel at position $(x_1,y_1)$ of every image in the image's z-stack. An example MIP-creation process is shown in Figure \ref{fig:mip-illustration}.
@@ -52,7 +50,7 @@ The Matlab function mip creates a maximal intensity projection for each z-stack.
 \caption{The mip function is illustrated projecting simple example images.}
 \label{fig:mip-illustration}
 \end{figure}
- 
+
 The function maskmaker is used to draw a region loosely enclosing a single cell at its most stretched out. Maskmaker sets pixels outside the region to black. This creates a mask loosely surrounding the cell of interest. Applying this mask leaves the user-selected cell as the largest object in the image so that the segmentation of the selected cell can proceed. 
 
 The function stackmasker applies this mask to all images in the stack. All masked images contain the entire cell of interest. The mask is drawn around the cell when the filopodia are stretched out to ensure the whole cell is visible in later images as the cell's filopodia recede.
@@ -73,16 +71,17 @@ Image segmentation yields multipage-tiff-files, where each page is a 1024 pixel 
 
 \section*{TODO:}
 \begin{enumerate}
+\item plot eccentricity*(area_j/area_initial) vs. time and its time-derivative vs. time
+\item plot eccentricity and area and their relative derivatives vs. time
 \item write a conclusion
 \item write acknowledgements
-\item discuss binarizing giving noise b/c thresholding not optimal
+\item find and cite references?
 \end{enumerate}
-
-\section*{Conclusions}
-
-\section*{Acknowlegements}
-
-\section*{References}
+%\section*{Conclusions}
+%
+%\section*{Acknowlegements}
+%
+%\section*{References}
 
 \newpage\section*{Appendices}
 \subsection*{Appendix A: Experiment Protocol}
@@ -114,23 +113,22 @@ The protocol for three collagen-samples of concentration 1.5 and gelled at 21$^{
 
 \newpage
 \begin{widetext}
-\newpage
 \subsection*{Appendix B: Code}
 \lstinputlisting[ language=Matlab,
                   caption=segmenter.m,
                   label=segmenter ]
-                {code/matlab/segmenter.m}
+                {./code/segmenter.m}
 
 \newpage
 \lstinputlisting[ language=Matlab,
                   caption=regionPropsScript.m,
                   label=regionPropsScript ]
-            {code/matlab/regionPropsScript.m}
+            {./code/regionPropsScript.m}
 
 \newpage          
 \lstinputlisting[ language=Matlab,
                   caption=plotterScript.m,
                   label=plotterScript ]
-                {code/matlab/plotterScript.m}
+                {./code/plotterScript.m}
 \end{widetext}
 \end{document}
