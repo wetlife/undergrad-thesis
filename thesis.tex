@@ -3,20 +3,20 @@
 \begin{document}
 \title{Area and Eccentricity of Fibroblasts During Trypsinization}\author{Kyle Thomas}\date{\today}\maketitle
 
-\begin{widetext}
+\onecolumngrid
+\section*{Abstract}
 \begin{abstract}
 \begin{center}
-Area and eccentricity of mouse-embryo fibroblast cells are both measured as the cells release the top surface of collagen gel. Image sets of the cells are collected at regular time-intervals during and after detachment. Software was written to segment selected cells and measure both the area and eccentricity of each segmented cell. Some code is included in appendices as well as a link to all of the code.
+Area and eccentricity of mouse-embryo fibroblast cells are both measured as the cells release these cells release the surface of collagen gel. Image sets of the cells are collected at regular time-intervals during and after detachment. Software was written to segment selected cells and measure both the area and eccentricity of each segmented cell. As the main product of this work, the code is included in appendices as well as a link to all of the code.
 \end{center}
 \end{abstract}
-\end{widetext}
+\twocolumngrid
 
 \section*{Experimentation Methods}
 \begin{figure}
   \centering
-  \caption{Orange cells submerged in violet growth medium atop green collagen are diagrammed.}
+  \caption{\label{fig:cellDiagram}A diagram of orange cells submerged in violet growth medium atop green collagen}
   \includegraphics[clip=true,width=.4\textwidth]{img/cells-diagram}
-  \label{fig:cellDiagram}
 \end{figure}
 
 Mouse embryo fibroblasts exhibiting green fluorescent protein (cell line NIH3T3/GFP) are placed atop a collagen-gel and suspended in growth medium(see the diagram in Figure \ref{fig:cellDiagram}). The fibroblasts attach to the surface of the collagen at 37$^\circ$C for 15 to 30 hours in a CO2-regulated incubator. The cells were not seen to undergo mitosis.
@@ -42,95 +42,139 @@ The proteins that bind the cells to the collagen are on bulges in the cell-membr
 This flattening of the philopodia leaves the cells somewhat spherical. The spherical fibroblasts appear as circles when seen through the microscope. While the cells return to a spherical shape, their lack of sphericilaty can be measured as eccentricity, as in the eccentricty of an ellipse.
 
 \section*{Image Processing}
-A single experiment produces a folder containing all the z-stacks acquired during the experiment. Each z-stack is comprised of several images, as described before. The image files for a z-stack are combined into a single TIFF using Matlab. A maximal intensity projection is used to transform all images comprising a z-stack into a single image.
+A single experiment yields a folder containing all z-stacks acquired during that experiment. Each z-stack is comprised of several images, as described before. These images are processed to yeild numerical data.
 
-The Matlab function mip creates a maximal intensity projection for each z-stack. This maximal intensity projection is a single image. The maximal intensity projection is made by using the value of the brightest pixel at position $(x_1,y_1)$ of every image in the image's z-stack. An example MIP-creation process is shown in Figure \ref{fig:mip-illustration}.
+The first step in processing the images from experiments is to transform each z-stack into single image. There is certainly data lost in the transformation of the z-stacks from several images to a single image. However, this experiment is only concerned with whether a cell is present at each pixel's location.
+
+For this reason, a maximal intensity projection (MIP) is used to transform all images comprising a z-stack into a single image. An MIP creates a maximal intensity projection for each z-stack. This maximal intensity projection is a single image. The maximal intensity projection is made by using the value of the brightest pixel at position $(x_1,y_1)$ chosen from among the values of each image's $(x_1,y_1)$ pixel. An example of the MIP function is shown in Figure \ref{fig:mip-illustration}.
 
 \begin{figure}[!h]
 %\centering
 \includegraphics[width=.4\textwidth]{./img/mip-illustration.pdf}
-\caption{The mip function is illustrated projecting simple example images.}
-\label{fig:mip-illustration}
+\caption{\label{fig:mip-illustration}An illustration of the MIP function creating a projection from two simple example images}
 \end{figure}
- 
-The function maskmaker is used to draw a region loosely enclosing a single cell at its most stretched out. Maskmaker sets pixels outside the region to black. This creates a mask loosely surrounding the cell of interest. Applying this mask leaves the user-selected cell as the largest object in the image so that the segmentation of the selected cell can proceed. 
 
-The function stackmasker applies this mask to all images in the stack. All masked images contain the entire cell of interest. The mask is drawn around the cell when the filopodia are stretched out to ensure the whole cell is visible in later images as the cell's filopodia recede.
-
-Masking works by ensuring that the cell of interest is the largest object shown. A mask is made loosely enclosing a single cell so that the user can specify a certain cell for software to outline precisely. Cells are precisely outlined by software to save time and to ensure uniformity in drawing outlines.
-
-Filling the objects in the image proceeds as follows. The brightness of each masked image is multiplied by a constant factor. This factor is 15 by default for the trypsinization images. Some z-stacks were brightened by a factor of more than 15 to facilitate masking entire cells.
+The values of all pixels in the MIP-images is multiplied by 50, effectively brighening the images. This is done to facilitate masking and subsequently segmenting entire cells. Seemingly, reducing the brightening factor would reduce the noise at the edges of the segmented cells. If so, this would improve precision accuracy of the numerical data.
 
 The Matlab Image Processing Toolbox function im2bw uses a brightness threshold to create a black and white image from a grayscale image. Pixels brighter than the threshold value are converted to white while other pixels are turned to black. The threshold used to create binary(black and white) images is 0.15.
 
-Several experiments show multiple cells in each image. For example, consider an image that contains cells A and B. Each cell's shape and eccentricity can be measured separately. 
+The custom function maskmaker is used to draw a region loosely enclosing the cell at its most stretched out. Maskmaker sets pixels outside this region to black. This creates a mask loosely surrounding the cell of interest. Multiplying this mask leaves the user-selected cell as the largest object in the resulting masked binary image.
 
-A cell is measured by creating a separate binary set of images for that cell. The cell is segmented by ensuring it is the only object visible in its image-set.
+In this way, the function stackmasker applies this mask to all images in the stack. All masked images contain the entire cell of interest. The mask is drawn around the cell when the cells are stretched out to ensure the entire cell is visible in later images.
 
-Cell A is loosely masked by the user so that it's the largest object visible. Cell A is segmented in the images. These images showing only cell A are saved. The area and eccentricity of cell A is measured from these images. This process is repeated to measure cell B.
+Masking works by ensuring that the cell of interest is the largest object shown. The reason a mask is made enclosing a cell is so that the user can specify that cell for software to segment precisely. Cells are precisely outlined by software to save time and to ensure uniformity in tracing the cell.
 
-Image segmentation yields multipage-tiff-files, where each page is a 1024 pixel by 1024 pixel image. All images in a file show only the same particular cell. The images are taken 20 minutes apart so that each file watches a different cell as it releases the collagen substrate.
+Many experiments show multiple cells in each image. For example, consider a fictitious image that contains cells A and B. Each cell's shape and eccentricity can be measured as follows.
 
-\section*{TODO:}
-\begin{enumerate}
-\item write a conclusion
-\item write acknowledgements
-\item discuss binarizing giving noise b/c thresholding not optimal
-\end{enumerate}
+Cell A is loosely masked by the user so that it's the largest object visible. Cell A is segmented in the images. These images showing only cell A are saved. The area and eccentricity of cell A is measured from cell A's segmented images.
 
-\section*{Conclusions}
+A cell is measured by segmenting a set of images for that cell only. The cell is segmented by ensuring it is the only object visible in its image-set. This is why masking needs to specify a single cell as it does.
 
-\section*{Acknowlegements}
+After cell A is segmented, the user can draw a region containing all of cell B as the largest object in the image-sequence. Subsequently, cell B is masked and segmented. In this way, information about each cell in an image can separately gathered from a single experiment's images.
 
-\section*{References}
+In figure \ref{fig:0-full}, the two images shown are the initial image and the final image from the same experiment. Figure \ref{fig:0} and figure \ref{fig:0123} show the region of interest outlined in figure \ref{fig:0-full}. The image-processing procedure is summarized in figure \ref{fig:0123}. 
 
-\newpage\section*{Appendices}
-\subsection*{Appendix A: Experiment Protocol}
-The protocol for three collagen-samples of concentration 1.5 and gelled at 21$^{\circ}$C is as follows:
-\begin{enumerate}
-	\item Create the collagen-solution.
-	\begin{enumerate}
-		\item Total volume to be made is V = (90$\mu$L per sample)(3 samples)(150\%) = 405$\mu$L.
-		\item Combine 40.5$\mu$L 10X PBS, 14.2$\mu$L NaOH, and 276.3$\mu$L growth-medium.
-		\item Shake this solution at 400rpm for 20 seconds.
-		\item Store at 6$^{\circ}$C for 10 minutes.
-		\item Add 71$\mu$L collagen homogeneously.
-		\item Stir collagen into solution with a 100$\mu$L pipette tip.
-		\item Pipette 90$\mu$L collagen-solution into each of the 3 samples a, b, and c.
-		\end{enumerate}
-	\item Wrap each sample in film and let gelate at 21$^{\circ}$C for two hours.
-	\item Place growth-medium on all samples and place cells on sample a.
-	\item Place cells on sample b four hours later.
-	\item Place cells on sample c four hours later.
-	\item Using confocal fluorescence microscopy, capture a 10$\mu$m tall z-stack of images of fibers and cells, separately, every 20 minutes for four hours.
-	\begin{enumerate}
-		\item After the first z-stack, replace the growth-medium on the sample with 1X PBS.
-		\item After the second z-stack, replace the PBS with fresh PBS.
-		\item After the third z-stack, replace the PBS with 1X TrypLe\texttrademark\hspace{.1em} Select.
-	\end{enumerate}
-		\item When sample a is finished imaging, image sample b in the same way as sample a was imaged.
-		\item When sample b is finished imaging, image sample c in the same way as sample a was imaged.
-\end{enumerate}
+\begin{figure}[h!]
+\includegraphics[width=.2\textwidth]{img/0-first-full.png}
+\includegraphics[width=.2\textwidth]{img/0-last-full.png}
+\caption{\label{fig:0-full}MIP of first and last z-stacks from an experiment with the region of interest outlined in red}
+\end{figure}
 
-\newpage
-\begin{widetext}
-\newpage
-\subsection*{Appendix B: Code}
+\section*{conclusions}
+The plotted numerical data in figure \ref{fig:resultPlots} shows an inverse relation between area and time. There also appears to be an inverse relation between eccentricity and time. Analyis of data from further experiments might allow one to model size and eccentricity of cells as they release a substrate.
+
+Acquiring images more frequently would likely increase smoothness of the plotted data. Seemingly, data collected would be more accurate using a taller z-stack. This is because there are single data points that fail to follow the decreasing trend of their data sets.
+
+The accuracy of the numerical data could be improved by minimizing the noise introduced when transforming the greyscale images into binary images. This noise could be reduced by adjusting the brightening factor and adjusting the threshold used to create the binary images. For this, one could maximize some function that increases appropriately with area while decreasing appropriately with roughness.
+
+%The data suggests that the area and eccentricity both decrease as time progresses. For this reason, the analysis of the data seems to confirm that a flattened out cell shrinks back into a ball. Still, the methods suggested to improve data collection and analysis could be used to model fibroblast-morphology during trypsinization.
+
+
+\clearpage
+\onecolumngrid
+\begin{center}
+\begin{figure}[h!]
+\includegraphics[width=.3\textwidth]{img/0-first.png}
+\includegraphics[width=.3\textwidth]{img/0-last.png}\\
+\includegraphics[width=.3\textwidth]{img/1-first.png}
+\includegraphics[width=.3\textwidth]{img/1-last.png}\\
+\includegraphics[width=.3\textwidth]{img/2-first.png}
+\includegraphics[width=.3\textwidth]{img/2-last.png}\\
+\includegraphics[width=.3\textwidth]{img/3-first.png}
+\includegraphics[width=.3\textwidth]{img/3-last.png}\\
+\caption{\label{fig:0123}Region of interest from FIG. \ref{fig:0-full} at several stages throughout image processing; from top to bottom, the rows show the original images, the result of 'binarization', the result of masking, and the segmented cell from the images.}
+\end{figure}
+
+%\section*{results}
+%Figure \ref{fig:resultPlots} plots the data from the experiment as labeled. Table \ref{tab:resultTable} presents numerical data from the experiment's images.
+
+\begin{figure}
+\includegraphics[width=.95\textwidth]{img/mplAreaVsTime.pdf}
+\includegraphics[width=.95\textwidth]{img/mplEccentricityVsTime.pdf}
+\caption{\label{fig:resultPlots}Plots of experimental data: Area Vs. Time and Eccentricity Vs. Time}
+\end{figure}
+\end{center}
+
+%\section*{acknowlegements}
+
+%\section*{References}
+
+%\clearpage\newpage
+%\section*{Appendices}
+%\subsection*{Appendix A: Experiment Protocol}
+%The protocol for creating three collagen-samples of concentration 1.5 and gelled at 21$^{\circ}$C is as follows:
+%\begin{enumerate}
+%	\item Create the collagen-solution.
+%	\begin{enumerate}
+%		\item Total volume to be made is V = (90$\mu$L per sample)(3 samples)(150\%) = 405$\mu$L.
+%		\item Combine 40.5$\mu$L 10X PBS, 14.2$\mu$L NaOH, and 276.3$\mu$L growth-medium.
+%		\item Shake this solution at 400rpm for 20 seconds.
+%		\item Store at 6$^{\circ}$C for 10 minutes.
+%		\item Add 71$\mu$L collagen homogeneously.
+%		\item Stir collagen into solution with a 100$\mu$L pipette tip.
+%		\item Pipette 90$\mu$L collagen-solution into each of the 3 samples a, b, and c.
+%		\end{enumerate}
+%	\item Wrap each sample in film and let gelate at 21$^{\circ}$C for two hours.
+%	\item Place growth-medium on all samples and place cells on sample a.
+%	\item Place cells on sample b four hours later.
+%	\item Place cells on sample c four hours later.
+%	\item Using confocal fluorescence microscopy, capture a 10$\mu$m tall z-stack of images of fibers and cells, separately, every 20 minutes for four hours.
+%	\begin{enumerate}
+%		\item After the first z-stack, replace the growth-medium on the sample with 1X PBS.
+%		\item After the second z-stack, replace the PBS with fresh PBS.
+%		\item After the third z-stack, replace the PBS with 1X TrypLe\texttrademark\hspace{.1em} Select.
+%	\end{enumerate}
+%		\item When sample a is finished imaging, image sample b in the same way as sample a was imaged.
+%		\item When sample b is finished imaging, image sample c in the same way as sample a was imaged.
+%\end{enumerate}
+ 
+\onecolumngrid
+\clearpage
+\section*{code to be used and distributed freely}
 \lstinputlisting[ language=Matlab,
                   caption=segmenter.m,
                   label=segmenter ]
                 {code/matlab/segmenter.m}
 
-\newpage
+\clearpage
 \lstinputlisting[ language=Matlab,
                   caption=regionPropsScript.m,
                   label=regionPropsScript ]
             {code/matlab/regionPropsScript.m}
 
-\newpage          
+\clearpage
 \lstinputlisting[ language=Matlab,
-                  caption=plotterScript.m,
-                  label=plotterScript ]
-                {code/matlab/plotterScript.m}
-\end{widetext}
+                  caption=ExtractNLargestBlobs.m,
+                  label=ExtractNLargestBlobs
+                {code/matlab/ExtractNLargestBlobs.m}
+
+%\section*{TODO:}
+%\begin{enumerate}
+%\item insert results with plots
+%\item write a conclusion
+%\item write acknowledgements
+%\item discuss binarizing giving noise b/c thresholding not optimal
+%\item Sometimes a cell appears to getting smaller then randomly appears larger then returns to its shrinking behavior, and at the area/eccentricity it would have been if it never got wacky. In results, discuss how using a taller z-stack centered about the gel-surface might have "settled the data's spuratic behavior." Taller z-stack might have better observed the z-directed movement of the cells, which might be causing some of the sudden-seeming changes and reversals of the direction of area/eccentricity changes... 
+
+\end{enumerate}
 \end{document}
