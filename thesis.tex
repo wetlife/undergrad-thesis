@@ -1,29 +1,29 @@
-\documentclass[ twocolumn,notitlepage]{ revtex4-1}
+\documentclass[twocolumn,notitlepage]{revtex4-1}
 \input{header.txt}
 
 \begin{document}
-\title{Objective Measurements of Area and Eccentricity of Fibroblasts During Trypsinization}
+\title{Automated Measurement of a Cell's Morphological Evolution via Image Analysis}
 \author{Kyle Thomas}
 \date{\today}
-\maketitle
 
 \onecolumngrid
 \section*{Abstract}
 \begin{abstract}
 \begin{center}
-Area and eccentricity of mouse-embryo fibroblast cells are both measured as these cells release the surface of a collagen gel. Image sets of the cells are collected at regular time-intervals during and after detachment. Software was written to segment selected cells and measure both the area and eccentricity of each segmented cell. As the main product of this work, the code is included in appendices as well as a link to all of the code.
+	Area and eccentricity of mouse-embryo fibroblasts are measured as these cells release the surface of a collagen gel. Image sets of the cells are collected at regular time-intervals during and after detachment. Software was written to segment selected cells and measure both the area and eccentricity of each segmented cell. As a main product of this research, the Matlab code for segmenting selected objects is listed in the appendix.
 \end{center}
 \end{abstract}
+\maketitle
 \twocolumngrid
 
-\section*{Experimentation Methods}
+\section*{Lab-Methods}
 \begin{figure}
   \centering
   \caption{\label{fig:cellDiagram}A diagram of orange cells submerged in violet growth medium atop green collagen}
   \includegraphics[clip=true,width=.4\textwidth]{img/cells-diagram}
 \end{figure}
 
-Mouse embryo fibroblasts exhibiting green fluorescent protein (cell line NIH3T3/GFP) are placed atop a collagen-gel and suspended in growth medium(see the diagram in Figure \ref{fig:cellDiagram}). The fibroblasts attach to the surface of the collagen at 37$^\circ$C for 15 to 30 hours in a CO2-regulated incubator. The cells were not seen to undergo mitosis.
+Mouse embryo fibroblasts exhibiting green fluorescent protein (cell line NIH3T3/GFP) are placed atop a collagen-gel and suspended in growth medium(see the diagram in figure~\ref{fig:cellDiagram}). The fibroblasts attach to the surface of the collagen at 37$^\circ$C for 15 to 30 hours in a CO2-regulated incubator. The cells were not seen to undergo mitosis.
 
 Cells are imaged every regularly beginning 40 minutes before trypsinization via TrypLE Select. The images are collected with a confocal microscope using a 70/30 transmission/reflection beam-splitter. The images are collected in image sets called z-stacks.
 
@@ -50,7 +50,7 @@ A single experiment yields a folder containing all z-stacks acquired during that
 
 The first step in processing the images from experiments is to transform each z-stack into single image. There is certainly data lost in the transformation of the z-stacks from several images to a single image. However, this experiment is only concerned with whether a cell is present at each pixel's location.
 
-For this reason, a maximal intensity projection (MIP) is used to transform all images comprising a z-stack into a single image. An MIP creates a maximal intensity projection for each z-stack. This maximal intensity projection is a single image. The maximal intensity projection is made by using the value of the brightest pixel at position $(x_1,y_1)$ chosen from among the values of each image's $(x_1,y_1)$ pixel. An example of the MIP function is shown in Figure \ref{fig:mip-illustration}.
+For this reason, a maximal intensity projection (MIP) is used to transform all images comprising a z-stack into a single image. An MIP creates a maximal intensity projection for each z-stack. This maximal intensity projection is a single image. The maximal intensity projection is made by using the value of the brightest pixel at position $(x_1,y_1)$ chosen from among the values of each image's $(x_1,y_1)$ pixel. An example of the MIP function is shown in figure~\ref{fig:mip-illustration}.
 
 \begin{figure}[!h]
 %\centering
@@ -76,7 +76,7 @@ A cell is measured by segmenting a set of images for that cell only. The cell is
 
 After cell A is segmented, the user segments cell B with the same process as used for cell A. The process begins by loosely enclosing cell B in a binarized MIP containing both cells. In this way, information about each cell in an image can separately gathered from a single experiment's images.
 
-In figure \ref{fig:0-full}, the two images shown are the initial image and the final image from the same experiment. Figure \ref{fig:0123} shows the region of interest outlined in figure \ref{fig:0-full}. The image-processing procedure is summarized in figure \ref{fig:0123}. 
+In figure~\ref{fig:0-full}, the two images shown are the initial image and the final image from the same experiment. figure~\ref{fig:0123} shows the region of interest outlined in figure~\ref{fig:0-full}. The image-processing procedure is summarized in figure~\ref{fig:0123}. 
 
 \begin{figure}[h!]
 \includegraphics[width=.2\textwidth]{img/0-first-full.png}
@@ -85,9 +85,9 @@ In figure \ref{fig:0-full}, the two images shown are the initial image and the f
 \end{figure}
 
 \section*{conclusions}
-The plotted numerical data in figure \ref{fig:resultPlots} appears to show that area and eccentricity both decrease as time progresses. Analyis of data from further experiments might allow one to model size and eccentricity of cells as they release a substrate. One could use this model to predict size and area of fibroblasts when trypsinized.
+The plotted numerical data in figure~\ref{fig:resultPlots} appears to show that area and eccentricity both decrease as time progresses. Analyis of data from further experiments might allow one to model size and eccentricity of cells as they release a substrate. One could use this model to predict size and area of fibroblasts when trypsinized.
 
-To improve the results of this data, I would take a taller a-stack, take images more frequently, and adjust the brightening factor to increase smoothness in images. Using taller z-stacks should better capture entire cells as they move away from the surface of the collagen. More frequent images would increase data. Adjusting the brightening factor could reduce noise which is amplified when using the im2bw funtion.
+To improve the results of this data, I would take a taller z-stack, take images more frequently, and adjust the brightening factor to increase smoothness in images. Using taller z-stacks should better capture entire cells as they move away from the surface of the collagen. More frequent images would increase data. Adjusting the brightening factor could reduce noise which is amplified when using the im2bw funtion.
 
 %Acquiring images more frequently would likely increase smoothness of the plotted data. Seemingly, data collected would be more accurate using a taller z-stack. Taller z-stacks give more data points to analyze, possibly removing fluctuations in this data set.
 %
@@ -108,7 +108,7 @@ To improve the results of this data, I would take a taller a-stack, take images 
 \includegraphics[width=.3\textwidth]{img/2-last.png}\\
 \includegraphics[width=.3\textwidth]{img/3-first.png}
 \includegraphics[width=.3\textwidth]{img/3-last.png}\\
-\caption{\label{fig:0123}Region of interest from FIG. \ref{fig:0-full} at several stages throughout image processing; from top to bottom, the rows show the original images, the result of 'binarization', the result of masking, and the segmented cell from the images.}
+\caption{\label{fig:0123}Region of interest from FIG.~\ref{fig:0-full} at several stages throughout image processing; from top to bottom, the rows show the original images, the result of 'binarization', the result of masking, and the segmented cell from the images.}
 \end{figure}
 
 %\section*{results}
@@ -156,7 +156,8 @@ To improve the results of this data, I would take a taller a-stack, take images 
  
 \onecolumngrid
 \clearpage
-\section*{Code (to be used and distributed freely)}
+\appendix*
+\section{Code (to be used and distributed freely)}
 \lstinputlisting[ language=Matlab,
                   caption=segmenter.m,
                   label=segmenter ]
@@ -207,5 +208,5 @@ To improve the results of this data, I would take a taller a-stack, take images 
 %\item discuss binarizing giving noise b/c thresholding not optimal
 %\item Sometimes a cell appears to getting smaller then randomly appears larger then returns to its shrinking behavior, and at the area/eccentricity it would have been if it never got wacky. In results, discuss how using a taller z-stack centered about the gel-surface might have "settled the data's spuratic behavior." Taller z-stack might have better observed the z-directed movement of the cells, which might be causing some of the sudden-seeming changes and reversals of the direction of area/eccentricity changes... 
 
-\end{enumerate}
+%\end{enumerate}
 \end{document}
